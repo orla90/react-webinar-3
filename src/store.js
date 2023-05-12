@@ -2,9 +2,10 @@
  * Хранилище состояния приложения
  */
 class Store {
-  constructor(initState = {}) {
+  constructor(initState = {} ) {
     this.state = initState;
     this.listeners = []; // Слушатели изменений состояния
+    this.count = 1;
   }
 
   /**
@@ -44,9 +45,19 @@ class Store {
   addItem() {
     this.setState({
       ...this.state,
-      list: [...this.state.list, {code: this.state.list.length + 1, title: 'Новая запись'}]
+      list: [...this.state.list, {code: this.setCount(), title: 'Новая запись'}]
     })
-  };
+  }
+
+  /**
+   * Установка счетчика количества записей
+   * @returns {number}
+   */
+  setCount() {
+    const code = (this.count !== 1) ? this.count + 1 : this.state.list.length + 1;
+    this.count = code;
+    return code;
+  }
 
   /**
    * Удаление записи по коду
@@ -57,7 +68,7 @@ class Store {
       ...this.state,
       list: this.state.list.filter(item => item.code !== code)
     })
-  };
+  }
 
   /**
    * Выделение записи по коду
@@ -67,12 +78,38 @@ class Store {
     this.setState({
       ...this.state,
       list: this.state.list.map(item => {
-        if (item.code === code) {
-          item.selected = !item.selected;
-        }
+        item.selected = (item.code === code) ? !item.selected : false;
+        if (item.code === code && item.selectedCount && item.selected) {
+          item.selectedCount = item.selectedCount + 1;
+          item.title = this.editTitle(item);
+        } else if (item.code === code && !item.selectedCount && item.selected) {
+          item.selectedCount = 1;
+          item.title = this.editTitle(item);
+        } 
         return item;
       })
     })
+  }
+  
+  /**
+   * Корректировка заголовка записи
+   * @param item {Object}
+   * @returns {string}
+   */
+  editTitle(item) {
+    return `${item.title.split(' | ')[0]} | Выделяли ${item.selectedCount} ${this.checkWordDeclension(item.selectedCount, ['раз', 'раза', 'раз'])}`
+  }
+  
+  /**
+   * Функция для склонения слов
+   * @param number {number} 
+   * @param words {[string]}
+   * @returns {string}
+   */
+  checkWordDeclension(number, words) {  
+    return words[(number % 100 > 4 && number % 100 < 20) ? 2
+      : [2, 0, 1, 1, 1, 2][(number % 10 < 5) ? Math.abs(number) % 10
+        : 5]];
   }
 }
 
