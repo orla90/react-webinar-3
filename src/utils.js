@@ -26,3 +26,15 @@ export function createElement(name, props = {}, ...children) {
 
   return element;
 }
+
+  /**
+   * Функция для склонения слов
+   * @param number {number} 
+   * @param words {[string]}
+   * @returns {string}
+   */
+  export function checkWordDeclension(number, words) {  
+    return words[(number % 100 > 4 && number % 100 < 20) ? 2
+      : [2, 0, 1, 1, 1, 2][(number % 10 < 5) ? Math.abs(number) % 10
+        : 5]];
+  }
