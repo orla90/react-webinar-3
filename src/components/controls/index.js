@@ -2,20 +2,23 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { plural } from '../../utils';
 import { getLocaleCurrency } from '../../utils';
+import { cn as bem } from '@bem-react/classname';
 import './style.css';
 
 function Controls(props) {
+  const cn = bem('Controls');
+
   return (
-    <div className='Controls'>
+    <div className={cn()}>
       {props.type === 'add-item' && (
         <button onClick={() => props.onAdd()}>Добавить</button>
       )}
       {props.type === 'open-cart' && (
         <>
-          <div className='Controls-description'>
+          <div className={cn('description')}>
             В корзине:
             {props.cart.length ? (
-              <span className='Controls-description__amount'>
+              <span className={cn('description__amount')}>
                 {props.cart.length}{' '}
                 {plural(props.cart.length, {
                   one: 'товар',
@@ -26,13 +29,10 @@ function Controls(props) {
                 {getLocaleCurrency(props.сartSum)}
               </span>
             ) : (
-              <span className='Controls-description__empty'>пусто</span>
+              <span className={cn('description__empty')}>пусто</span>
             )}
           </div>
-          <button
-            onClick={() => props.onOpenCart()}
-            className='Controls-button'
-          >
+          <button onClick={() => props.onOpenCart()} className={cn('button')}>
             Перейти
           </button>
         </>

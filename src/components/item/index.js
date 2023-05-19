@@ -1,9 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { getLocaleCurrency } from '../../utils';
+import { cn as bem } from '@bem-react/classname';
 import './style.css';
 
 function Item(props) {
+  const cn = bem('Item');
+
   const callbacks = {
     onDelete: (e) => {
       e.stopPropagation();
@@ -20,23 +23,23 @@ function Item(props) {
   };
 
   return (
-    <div className='Item'>
-      <div className='Item-code'>{props.item.code}</div>
-      <div className='Item-title'>{props.item.title}</div>
-      <div className='Item-price'>{getLocaleCurrency(props.item.price)}</div>
+    <div className={cn()}>
+      <div className={cn('code')}>{props.item.code}</div>
+      <div className={cn('title')}>{props.item.title}</div>
+      <div className={cn('price')}>{getLocaleCurrency(props.item.price)}</div>
       {props.type === 'cart-list' && (
-        <div className='Item-count'>{props.count} шт</div>
+        <div className={cn('count')}>{props.count} шт</div>
       )}
-      <div className='Item-actions'>
+      <div className={cn('actions')}>
         {props.type === 'app-list' && (
-          <button onClick={callbacks.onAddItemToCart} className='Item-button'>
+          <button onClick={callbacks.onAddItemToCart} className={cn('button')}>
             Добавить
           </button>
         )}
         {props.type === 'cart-list' && (
           <button
             onClick={callbacks.onDeleteItemFromCart}
-            className='Item-button'
+            className={cn('button')}
           >
             Удалить
           </button>

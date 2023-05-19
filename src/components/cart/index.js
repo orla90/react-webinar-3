@@ -3,18 +3,21 @@ import Controls from '../controls';
 import PropTypes from 'prop-types';
 import List from '../list';
 import { getLocaleCurrency } from '../../utils';
+import { cn as bem } from '@bem-react/classname';
 import './style.css';
 
 function Cart(props) {
+  const cn = bem('Cart');
+
   const initialCodes = props.cart.map((item) => item.code);
   const initialCartList = props.list.filter((item) =>
     initialCodes.includes(item.code)
   );
 
   return (
-    <div className='Cart'>
-      <header className='Cart-header'>
-        <h2 className='Cart-title'>Корзина</h2>
+    <div className={cn()}>
+      <header className={cn('header')}>
+        <h2 className={cn('title')}>Корзина</h2>
         <Controls
           type='close-cart'
           cart={props.cart}
@@ -22,7 +25,7 @@ function Cart(props) {
           onCloseCart={props.onCloseCart}
         />
       </header>
-      <div className='Cart-content'>
+      <div className={cn('content')}>
         <List
           list={initialCartList}
           type='cart-list'
@@ -30,14 +33,14 @@ function Cart(props) {
           onDeleteItemFromCart={props.onDeleteItemFromCart}
         />
         {initialCartList.length > 0 ? (
-          <div className='Cart-total'>
-            <span className='Cart-total__title'>Итого</span>
-            <span className='Cart-total__currency'>
+          <div className={cn('total')}>
+            <span className={cn('total__title')}>Итого</span>
+            <span className={cn('total__currency')}>
               {getLocaleCurrency(props.сartSum)}
             </span>
           </div>
         ) : (
-          <h2 className='Cart-empty'>В корзине пока нет товаров</h2>
+          <h2 className={cn('empty')}>В корзине пока нет товаров</h2>
         )}
       </div>
     </div>

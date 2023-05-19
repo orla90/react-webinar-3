@@ -1,17 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Item from '../item';
+import { cn as bem } from '@bem-react/classname';
 import './style.css';
 
 function List(props) {
+  const cn = bem('List');
+
   const getItemCount = (code) => {
     return props.cart ? props.cart.find((item) => item.code === code).count : 0;
   };
 
   return (
-    <div className='List'>
+    <div className={cn()}>
       {props.list.map((item) => (
-        <div key={item.code} className='List-item'>
+        <div key={item.code} className={cn('item')}>
           <Item
             item={item}
             count={getItemCount(item.code)}
