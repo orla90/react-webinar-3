@@ -49,3 +49,20 @@ export const generateCode1 = (function (start = 0) {
 export function generateCode2() {
   return generateCode2.value ? ++generateCode2.value : generateCode2.value = 1;
 }
+
+/**
+ * Возвращает валюту с языкозависимым представлением числа
+ * @param value {Number} Число для представления валюты.
+ * @param options {Object<String>} Дополнительные опции функции.
+ * @example getLocaleCurrency(5000, 'de-DE', { style: 'currency', currency: 'EUR' })
+ * @param [locale] {String} Локаль (код языка)
+ * @returns {string}
+ */
+export function getLocaleCurrency(
+  value,
+  locale = 'ru-RU',
+  options = { style: 'currency', currency: 'RUB' }
+) {
+  let cur = value.toLocaleString(locale, options);
+  return (value ^ 0) === value ? cur.replace(',00', '') : cur;
+}
