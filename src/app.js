@@ -1,11 +1,11 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import List from './components/list';
 import Controls from './components/controls';
 import Head from './components/head';
 import PageLayout from './components/page-layout';
 import Modal from './components/modal';
 import Cart from './components/cart';
-
+import AppItem from './components/app-item';
 /**
  * Приложение
  * @param store {Store} Хранилище состояния приложения
@@ -14,16 +14,7 @@ import Cart from './components/cart';
 function App({ store }) {
   const { list, cart } = store.getState();
 
-  const [cartSum, setCartSum] = useState(0);
   const [isCartOpened, setIsCartOpened] = useState(false);
-
-  useEffect(() => {
-    let sum = 0;
-    cart.forEach((el) => {
-      sum += list.find((item) => item.code === el.code).price * el.count;
-    });
-    setCartSum(sum);
-  }, [cart]);
 
   const onOpenCart = () => {
     if (!isCartOpened) {
@@ -63,25 +54,16 @@ function App({ store }) {
   return (
     <PageLayout>
       <Head title='Магазин' />
-      <Controls
-        type='open-cart'
-        cart={cart}
-        сartSum={cartSum}
-        onOpenCart={onOpenCart}
-      />
-      <List
-        list={list}
-        type='app-list'
-        onDeleteItem={callbacks.onDeleteItemFromCart}
-        onAddItemToCart={callbacks.onAddItemToCart}
-      />
+      <Controls type='open-cart' cart={cart} onOpenCart={onOpenCart} />
+      <List list={list}>
+        <AppItem onAddItemToCart={callbacks.onAddItemToCart} />
+      </List>
       {isCartOpened && (
         <Modal>
           <Cart
             onCloseCart={onCloseCart}
             cart={cart}
             list={list}
-            сartSum={cartSum}
             onDeleteItemFromCart={callbacks.onDeleteItemFromCart}
           />
         </Modal>

@@ -17,16 +17,16 @@ function Controls(props) {
         <>
           <div className={cn('description')}>
             В корзине:
-            {props.cart.length ? (
+            {props.cart.cartList.length ? (
               <span className={cn('description__amount')}>
-                {props.cart.length}{' '}
-                {plural(props.cart.length, {
+                {props.cart.cartList.length}{' '}
+                {plural(props.cart.cartList.length, {
                   one: 'товар',
                   few: 'товара',
                   many: 'товаров',
                 })}
                 {' / '}
-                {getLocaleCurrency(props.сartSum)}
+                {getLocaleCurrency(props.cart.totalSum)}
               </span>
             ) : (
               <span className={cn('description__empty')}>пусто</span>
@@ -49,7 +49,7 @@ Controls.propTypes = {
   onOpenCart: PropTypes.func,
   onCloseCart: PropTypes.func,
   type: PropTypes.string.isRequired,
-  сartSum: PropTypes.number,
+  cart: PropTypes.object.isRequired,
 };
 
 Controls.defaultProps = {

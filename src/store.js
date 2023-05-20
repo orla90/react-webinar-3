@@ -92,20 +92,28 @@ class Store {
    * @param code
    */
   addItemToCart(code) {
-    const isInCart = !!this.state.cart.find((item) => item.code === code);
+    const price = this.state.list.find((item) => item.code === code).price;
+    const isInCart = !!this.state.cart.cartList.find(
+      (item) => item.code === code
+    );
     this.setState({
       ...this.state,
-      cart: isInCart
-        ? this.state.cart.map((item) => {
-            if (item.code === code) {
-              return {
-                ...item,
-                count: item.count + 1,
-              };
-            }
-            return item;
-          })
-        : [...this.state.cart, { code: code, count: 1 }],
+      cart: {
+        ...this.cart,
+        cartList: isInCart
+          ? this.state.cart.cartList.map((item) => {
+              if (item.code === code) {
+                return {
+                  ...item,
+                  count: item.count + 1,
+                  sum: item.sum + price,
+                };
+              }
+              return item;
+            })
+          : [...this.state.cart.cartList, { code: code, count: 1, sum: price }],
+        totalSum: this.state.cart.totalSum + price,
+      },
     });
   }
 
@@ -114,9 +122,16 @@ class Store {
    * @param code
    */
   deleteItemFromCart(code) {
+    const itemToDelete = this.state.cart.cartList.find(
+      (item) => item.code === code
+    );
     this.setState({
       ...this.state,
-      cart: this.state.cart.filter((item) => item.code !== code),
+      cart: {
+        ...this.cart,
+        cartList: this.state.cart.cartList.filter((item) => item.code !== code),
+        totalSum: this.state.cart.totalSum - itemToDelete.sum,
+      },
     });
   }
 }
