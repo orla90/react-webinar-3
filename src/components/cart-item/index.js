@@ -5,7 +5,7 @@ import { cn as bem } from '@bem-react/classname';
 import './style.css';
 
 function CartItem(props) {
-  const cn = bem('Item');
+  const cn = bem('CartItem');
 
   const callbacks = {
     onDeleteItemFromCart: () => {
