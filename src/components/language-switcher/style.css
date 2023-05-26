@@ -1,0 +1,22 @@
+.LanguageSwitcher {
+  font-family: 'Arial';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 21px;
+  color: #767676;
+}
+
+.LanguageSwitcher-item {
+  cursor: pointer;
+  color: #767676;
+  border-radius: 2px;
+  border: 1.87px solid #767676;
+  transition: all 0.5s;
+}
+
+.LanguageSwitcher_lang_ru .LanguageSwitcher-item_ru,
+.LanguageSwitcher_lang_en .LanguageSwitcher-item_en {
+  border-color: #0087e9;
+  color: #0087e9;
+}

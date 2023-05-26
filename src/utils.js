@@ -33,3 +33,47 @@ export function codeGenerator(start = 0) {
 export function numberFormat(value, locale = 'ru-RU', options = {}) {
   return new Intl.NumberFormat(locale, options).format(value);
 }
+
+/**
+ * Возвращает массив страниц для пагинации
+ * @param currentPage {Number}
+ * @param totalPagesCount {Number}
+ * @returns {Array}
+ */
+export function createPagesArray(currentPage = 1, totalPagesCount = 1) {
+  let pagesArray = [],
+    pagesArrayWithDots = [],
+    dotsPlace;
+
+  const delta = 1;
+  const left = currentPage - delta;
+  const right = currentPage + delta + 1;
+
+  for (let i = 1; i <= totalPagesCount; i++) {
+    if (i === 1 || i === totalPagesCount || (i >= left && i < right)) {
+      pagesArray.push(i);
+    }
+  }
+
+  for (let i of pagesArray) {
+    if (dotsPlace) {
+      if (i - dotsPlace === 2 || i - dotsPlace !== 1) {
+        pagesArrayWithDots.push('...');
+      }
+    }
+    pagesArrayWithDots.push(i);
+    dotsPlace = i;
+  }
+
+  return pagesArrayWithDots;
+}
+
+/**
+ * Преобразует число с точкой в строчку с запятой
+ * @param num {Number}
+ * @returns {String}
+ */
+export function convertDotToComma(num) {
+  const strWithComma = (num + '').replace('.', ',');
+  return strWithComma;
+}

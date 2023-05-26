@@ -1,0 +1,44 @@
+.ArticleMain {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 23px 40px;
+  gap: 20px;
+}
+
+.ArticleMain p {
+  margin: 0;
+}
+
+.ArticleMain-text {
+  font-family: 'Arial';
+  font-style: normal;
+  font-size: 18px;
+  line-height: 21px;
+  margin: 20px 0;
+  color: #000000;
+}
+
+.ArticleMain-text_bold {
+  font-weight: 700;
+}
+
+.ArticleMain-text_thin {
+  font-weight: 400;
+}
+
+.ArticleMain-text_big {
+  font-size: 24px;
+  line-height: 28px;
+}
+
+.ArticleMain-btn {
+  font-family: 'Arial';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 15px;
+  min-width: 76px;
+  text-align: center;
+  color: #000000;
+}

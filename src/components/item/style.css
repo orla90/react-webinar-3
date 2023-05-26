@@ -2,7 +2,7 @@
   display: flex;
   justify-content: flex-start;
   transition: background-color 1s;
-  padding-left: 10px
+  padding-left: 10px;
 }
 
 .Item_selected {
@@ -24,11 +24,30 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: 20px
+  gap: 20px;
 }
 
 .Item-price {
   padding: 0 0 0 10px;
   white-space: nowrap;
   font-size: 18px;
+}
+
+.Item-link {
+  font-family: 'Arial';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 18px;
+  color: #000000;
+  text-decoration: underline transparent;
+  transition: text-decoration 0.5s;
+}
+
+.Item-link:hover {
+  text-decoration-color: #000000;
+}
+
+.Item-btn {
+  min-width: 79px;
 }

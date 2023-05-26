@@ -1,0 +1,17 @@
+.FlexContainer {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+}
+
+.FlexContainer_flex_space-between {
+  justify-content: space-between;
+}
+
+.FlexContainer_flex_left {
+  justify-content: flex-start;
+}
+
+.FlexContainer_flex_right {
+  justify-content: flex-end;
+}
