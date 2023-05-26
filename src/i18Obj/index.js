@@ -9,7 +9,7 @@ const i18Obj = {
     close: 'Close',
     inTheBasket: 'In the basket',
     empty: 'nothing',
-    pcs: 'psc',
+    pcs: 'pcs',
     total: 'Total',
     country: 'Сountry of origin',
     category: 'Category',
