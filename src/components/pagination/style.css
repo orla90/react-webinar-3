@@ -35,6 +35,7 @@
 }
 
 .Pagination-item_disabled {
+  color: #cccccc;
   cursor: default;
   pointer-events: none;
 }
