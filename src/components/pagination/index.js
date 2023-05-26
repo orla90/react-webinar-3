@@ -23,7 +23,9 @@ function Pagination(props) {
             key={index}
             onClick={handleOnClick}
             className={
-              props.currentPage === page
+              page === '...'
+                ? cn('item', { disabled: true })
+                : props.currentPage === page
                 ? cn('item', { active: true })
                 : cn('item', { default: true })
             }

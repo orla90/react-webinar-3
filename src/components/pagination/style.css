@@ -34,6 +34,11 @@
   background: #0087e9;
 }
 
+.Pagination-item_disabled {
+  cursor: default;
+  pointer-events: none;
+}
+
 .Pagination-item:hover {
   cursor: pointer;
   transition: background-color 0.5s;

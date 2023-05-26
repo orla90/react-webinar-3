@@ -34,7 +34,7 @@ function ItemBasket(props) {
       <div className={cn('right')}>
         <div className={cn('cell')}>{numberFormat(props.item.price)} ₽</div>
         <div className={cn('cell')}>
-          {numberFormat(props.item.amount || 0)} {i18Obj[props.language].psc}
+          {numberFormat(props.item.amount || 0)} {i18Obj[props.language].pcs}
         </div>
         <div className={cn('cell')}>
           <button onClick={callbacks.onRemove}>

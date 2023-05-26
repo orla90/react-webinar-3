@@ -21,6 +21,7 @@ class Article extends StoreModule {
           title: json.result.title,
           description: json.result.description,
           country: json.result.madeIn.title,
+          code: json.result.madeIn.code,
           edition: json.result.edition,
           category: json.result.category.title,
           price: json.result.price,

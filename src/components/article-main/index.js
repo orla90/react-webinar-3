@@ -20,7 +20,12 @@ function ArticleMain({ article, onAdd, language }) {
           {i18Obj[language].country}
           {': '}
         </span>
-        <span className={cn('text', { bold: true })}>{article.country}</span>
+        <span className={cn('text', { bold: true })}>
+          {article.country}
+          {' ('}
+          {article.code}
+          {')'}
+        </span>
       </p>
       <p>
         <span className={cn('text', { thin: true })}>
