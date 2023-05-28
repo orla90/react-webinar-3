@@ -1,26 +1,27 @@
-import { memo, useCallback } from 'react';
+import { memo, useCallback, useEffect } from 'react';
 import PageLayout from '../../components/page-layout';
 import Head from '../../components/head';
-import CustomLink from '../../components/UI/custom-link';
+import MainMenu from '../../components/main-menu';
 import BasketTool from '../../components/basket-tool';
 import ArticleMain from '../../components/article-main';
-import { ROUTES } from '../../constants/routes';
 import useStore from '../../store/use-store';
 import useSelector from '../../store/use-selector';
+import { useParams } from 'react-router-dom';
 import FlexContainer from '../../components/flex-container';
 import i18Obj from '../../i18Obj';
 
 function Article() {
   const store = useStore();
-  
+
   const select = useSelector((state) => ({
     article: state.articles.article,
+    isLoading: state.articles.isLoading,
     amount: state.basket.amount,
     sum: state.basket.sum,
     language: state.language.language,
-    currentPage: state.pagination.currentPage,
+    currentPage: state.catalog.currentPage,
   }));
-  
+
   const callbacks = {
     openModalBasket: useCallback(
       () => store.actions.modals.open('basket'),
@@ -36,7 +37,18 @@ function Article() {
       (lang) => store.actions.language.setLanguage(lang),
       [store]
     ),
+
+    getArticleById: useCallback(
+      (_id) => store.actions.articles.getArticleById(_id),
+      [store]
+    ),
   };
+
+  const ArticleId = useParams()['id'];
+
+  useEffect(() => {
+    callbacks.getArticleById(ArticleId);
+  }, [ArticleId]);
 
   return (
     <PageLayout>
@@ -46,7 +58,14 @@ function Article() {
         setLanguage={callbacks.setLanguage}
       />
       <FlexContainer>
-        <CustomLink to={select.currentPage ? `/${select.currentPage}`: ROUTES.HOME}>{i18Obj[select.language].home}</CustomLink>
+        <MainMenu
+          menu={[
+            {
+              to: select.currentPage ? `/${select.currentPage}` : `/`,
+              content: `${i18Obj[select.language].home}`,
+            },
+          ]}
+        />
         <BasketTool
           onOpen={callbacks.openModalBasket}
           amount={select.amount}
@@ -54,11 +73,13 @@ function Article() {
           language={select.language}
         />
       </FlexContainer>
-      <ArticleMain
-        article={select.article}
-        onAdd={callbacks.addToBasket}
-        language={select.language}
-      />
+      {!select.isLoading && (
+        <ArticleMain
+          article={select.article}
+          onAdd={callbacks.addToBasket}
+          language={select.language}
+        />
+      )}
     </PageLayout>
   );
 }

@@ -5,7 +5,7 @@ import Head from '../../components/head';
 import BasketTool from '../../components/basket-tool';
 import List from '../../components/list';
 import FlexContainer from '../../components/flex-container';
-import CustomLink from '../../components/UI/custom-link';
+import MainMenu from '../../components/main-menu';
 import Pagination from '../../components/pagination';
 import i18Obj from '../../i18Obj';
 import useStore from '../../store/use-store';
@@ -18,22 +18,19 @@ function Main() {
     list: state.catalog.list,
     amount: state.basket.amount,
     sum: state.basket.sum,
-    currentPage: state.pagination.currentPage,
-    perPage: state.pagination.perPage,
-    totalPagesCount: state.pagination.totalPagesCount,
+    currentPage: state.catalog.currentPage,
+    perPage: state.catalog.perPage,
+    totalPagesCount: state.catalog.totalPagesCount,
     language: state.language.language,
   }));
 
   useEffect(() => {
-    store.actions.catalog.load();
-    store.actions.pagination.getTotalPagesCount();
+    store.actions.catalog.getTotalPagesCount();
+    store.actions.catalog.setListForCurrentPage();
   }, []);
 
   useEffect(() => {
-    store.actions.catalog.setListForCurrentPage([
-      select.currentPage,
-      select.perPage,
-    ]);
+    store.actions.catalog.setListForCurrentPage();
   }, [select.currentPage, select.perPage]);
 
   const callbacks = {
@@ -50,7 +47,7 @@ function Main() {
 
     // Установить текущую страницу
     setCurrentPage: useCallback(
-      (page) => store.actions.pagination.setCurrentPage(page),
+      (page) => store.actions.catalog.setCurrentPage(page),
       [store]
     ),
     // Получить статью по id
@@ -89,7 +86,14 @@ function Main() {
         setLanguage={callbacks.setLanguage}
       />
       <FlexContainer>
-        <CustomLink to={select.currentPage? `${select.currentPage}`: ROUTES.HOME}>{i18Obj[select.language].home}</CustomLink>
+        <MainMenu
+          menu={[
+            {
+              to: select.currentPage ? `/${select.currentPage}` : `/`,
+              content: `${i18Obj[select.language].home}`,
+            },
+          ]}
+        />
         <BasketTool
           onOpen={callbacks.openModalBasket}
           amount={select.amount}

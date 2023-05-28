@@ -1,6 +1,6 @@
-import { memo, useEffect } from 'react';
+import { memo, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import CustomLink from '../../components/UI/custom-link';
+import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { cn as bem } from '@bem-react/classname';
 import './style.css';
@@ -26,13 +26,13 @@ function Pagination(props) {
     <nav className={cn()}>
       <ul className={cn('list')}>
         {pages.map((page, index) => (
-          <CustomLink
+          <Link
             to={`${page}`}
             onClick={handleOnClick}
             className={cn('link')}
+            key={index}
           >
             <li
-              key={index}
               className={
                 page === '...'
                   ? cn('item', { disabled: true })
@@ -43,7 +43,7 @@ function Pagination(props) {
             >
               {page}
             </li>
-          </CustomLink>
+          </Link>
         ))}
       </ul>
     </nav>

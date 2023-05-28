@@ -10,6 +10,9 @@ class Catalog extends StoreModule {
   initState() {
     return {
       list: [],
+      currentPage: 1,
+      perPage: 10,
+      totalPagesCount: 0,
     };
   }
 
@@ -24,11 +27,35 @@ class Catalog extends StoreModule {
       'Загружены товары из АПИ'
     );
   }
+  
+  setCurrentPage(page) {
+    this.setState(
+      {
+        ...this.getState(),
+        currentPage: page,
+      },
+      'Определена текущая страница'
+    );
+  }
 
-  async setListForCurrentPage([currentPage = 1, perPage = 10]) {
-    const skip = perPage * (currentPage - 1);
+  async getTotalPagesCount() {
     const response = await fetch(
-      `/api/v1/articles?limit=${perPage}&skip=${skip}`
+      `/api/v1/articles?limit=${this.perPage}&fields=items(_id, title, price),count`
+    );
+    const json = await response.json();
+    this.setState(
+      {
+        ...this.getState(),
+        totalPagesCount: Math.ceil(json.result.count / this.getState().perPage),
+      },
+      'Получено количество страниц'
+    );
+  }
+  
+  async setListForCurrentPage() {
+    const skip = this.getState().perPage * (this.getState().currentPage - 1);
+    const response = await fetch(
+      `/api/v1/articles?limit=${this.getState().perPage}&skip=${skip}`
     );
     const json = await response.json();
     this.setState({

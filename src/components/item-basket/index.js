@@ -1,8 +1,7 @@
 import { memo } from 'react';
 import propTypes from 'prop-types';
 import { numberFormat } from '../../utils';
-import CustomLink from '../UI/custom-link';
-import { ROUTES } from '../../constants/routes';
+import { Link } from 'react-router-dom';
 import i18Obj from '../../i18Obj';
 import { cn as bem } from '@bem-react/classname';
 import PropTypes from 'prop-types';
@@ -24,13 +23,13 @@ function ItemBasket(props) {
 
   return (
     <div className={cn()}>
-      <CustomLink
+      <Link
         to={`article/${props.item._id}`}
         className={cn('title')}
         onClick={onLinkClick}
       >
         {props.item.title}
-      </CustomLink>
+      </Link>
       <div className={cn('right')}>
         <div className={cn('cell')}>{numberFormat(props.item.price)} ₽</div>
         <div className={cn('cell')}>

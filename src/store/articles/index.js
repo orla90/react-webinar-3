@@ -4,10 +4,17 @@ class Article extends StoreModule {
   initState() {
     return {
       article: {},
+      isLoading: true,
     };
   }
 
   async getArticleById(id) {
+    this.setState(
+      {
+        ...this.getState(),
+        isLoading: true,
+      });
+    
     const response = await fetch(
       `/api/v1/articles/${id}?fields=*,madeIn(title,code),category(title)`
     );
@@ -26,6 +33,7 @@ class Article extends StoreModule {
           category: json.result.category.title,
           price: json.result.price,
         },
+        isLoading: false,
       },
       'Получена статья о товаре'
     );

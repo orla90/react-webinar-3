@@ -1,11 +1,10 @@
 import { memo } from 'react';
-import { CustomLink } from '../UI/custom-link';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { cn as bem } from '@bem-react/classname';
 import { numberFormat } from '../../utils';
 import i18Obj from '../../i18Obj';
 import './style.css';
-import { ROUTES } from '../../constants/routes';
 
 function Item({ item, language, onAdd, getArticleById }) {
   const cn = bem('Item');
@@ -18,13 +17,13 @@ function Item({ item, language, onAdd, getArticleById }) {
   return (
     <div className={cn()}>
       <div className={cn('title')}>
-        <CustomLink
+        <Link
           to={`article/${item._id}`}
           onClick={callbacks.getArticleById}
           className={cn('link')}
         >
           {item.title}
-        </CustomLink>
+        </Link>
       </div>
       <div className={cn('actions')}>
         <div className={cn('price')}>{numberFormat(item.price)} ₽</div>
