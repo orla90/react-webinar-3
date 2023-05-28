@@ -18,6 +18,7 @@ function Article() {
     amount: state.basket.amount,
     sum: state.basket.sum,
     language: state.language.language,
+    currentPage: state.pagination.currentPage,
   }));
   
   const callbacks = {
@@ -45,7 +46,7 @@ function Article() {
         setLanguage={callbacks.setLanguage}
       />
       <FlexContainer>
-        <CustomLink to={ROUTES.HOME}>{i18Obj[select.language].home}</CustomLink>
+        <CustomLink to={select.currentPage ? `/${select.currentPage}`: ROUTES.HOME}>{i18Obj[select.language].home}</CustomLink>
         <BasketTool
           onOpen={callbacks.openModalBasket}
           amount={select.amount}

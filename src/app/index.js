@@ -18,6 +18,7 @@ function App() {
     <BrowserRouter>
       <Routes >
         <Route path={ROUTES.HOME} element={<Main />} />
+        <Route path={ROUTES.REST} element={<Main />} />
         <Route path={ROUTES.ARTICLE} element={<Article />} />
       </Routes>
       {activeModal === 'basket' && <Basket />}

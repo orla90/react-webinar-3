@@ -1,5 +1,7 @@
-import { memo } from 'react';
+import { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import CustomLink from '../../components/UI/custom-link';
+import { useParams } from 'react-router-dom';
 import { cn as bem } from '@bem-react/classname';
 import './style.css';
 import { createPagesArray } from '../../utils';
@@ -7,6 +9,12 @@ import { createPagesArray } from '../../utils';
 function Pagination(props) {
   const cn = bem('Pagination');
   const pages = createPagesArray(props.currentPage, props.totalPagesCount);
+
+  const pageNumber = +useParams()['*'] || 1;
+
+  useEffect(() => {
+    props.onSetCurrentPage(pageNumber);
+  }, [pageNumber]);
 
   const handleOnClick = (e) => {
     if (e.target.innerText !== '...') {
@@ -18,19 +26,24 @@ function Pagination(props) {
     <nav className={cn()}>
       <ul className={cn('list')}>
         {pages.map((page, index) => (
-          <li
-            key={index}
+          <CustomLink
+            to={`${page}`}
             onClick={handleOnClick}
-            className={
-              page === '...'
-                ? cn('item', { disabled: true })
-                : props.currentPage === page
-                ? cn('item', { active: true })
-                : cn('item', { default: true })
-            }
+            className={cn('link')}
           >
-            <a className={cn('link')}>{page}</a>
-          </li>
+            <li
+              key={index}
+              className={
+                page === '...'
+                  ? cn('item', { disabled: true })
+                  : props.currentPage === page
+                  ? cn('item', { active: true })
+                  : cn('item', { default: true })
+              }
+            >
+              {page}
+            </li>
+          </CustomLink>
         ))}
       </ul>
     </nav>

@@ -89,7 +89,7 @@ function Main() {
         setLanguage={callbacks.setLanguage}
       />
       <FlexContainer>
-        <CustomLink to={'/'}>{i18Obj[select.language].home}</CustomLink>
+        <CustomLink to={select.currentPage? `${select.currentPage}`: ROUTES.HOME}>{i18Obj[select.language].home}</CustomLink>
         <BasketTool
           onOpen={callbacks.openModalBasket}
           amount={select.amount}
