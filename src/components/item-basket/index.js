@@ -25,7 +25,7 @@ function ItemBasket(props) {
   return (
     <div className={cn()}>
       <CustomLink
-        to={ROUTES.ARTICLE}
+        to={`article/${props.item._id}`}
         className={cn('title')}
         onClick={onLinkClick}
       >

@@ -3,9 +3,9 @@ import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import Main from './main';
 import Basket from './basket';
 import Article from './article';
-import useStore from '../store/use-store';
 import useSelector from '../store/use-selector';
 import { ROUTES } from '../constants/routes';
+
 
 /**
  * Приложение

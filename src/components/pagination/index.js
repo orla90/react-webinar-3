@@ -6,7 +6,6 @@ import { createPagesArray } from '../../utils';
 
 function Pagination(props) {
   const cn = bem('Pagination');
-
   const pages = createPagesArray(props.currentPage, props.totalPagesCount);
 
   const handleOnClick = (e) => {

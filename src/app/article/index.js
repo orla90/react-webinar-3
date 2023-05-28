@@ -4,6 +4,7 @@ import Head from '../../components/head';
 import CustomLink from '../../components/UI/custom-link';
 import BasketTool from '../../components/basket-tool';
 import ArticleMain from '../../components/article-main';
+import { ROUTES } from '../../constants/routes';
 import useStore from '../../store/use-store';
 import useSelector from '../../store/use-selector';
 import FlexContainer from '../../components/flex-container';
@@ -11,14 +12,14 @@ import i18Obj from '../../i18Obj';
 
 function Article() {
   const store = useStore();
-
+  
   const select = useSelector((state) => ({
     article: state.articles.article,
     amount: state.basket.amount,
     sum: state.basket.sum,
     language: state.language.language,
   }));
-
+  
   const callbacks = {
     openModalBasket: useCallback(
       () => store.actions.modals.open('basket'),
@@ -44,7 +45,7 @@ function Article() {
         setLanguage={callbacks.setLanguage}
       />
       <FlexContainer>
-        <CustomLink to={'/'}>{i18Obj[select.language].home}</CustomLink>
+        <CustomLink to={ROUTES.HOME}>{i18Obj[select.language].home}</CustomLink>
         <BasketTool
           onOpen={callbacks.openModalBasket}
           amount={select.amount}

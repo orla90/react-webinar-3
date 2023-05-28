@@ -19,7 +19,7 @@ function Item({ item, language, onAdd, getArticleById }) {
     <div className={cn()}>
       <div className={cn('title')}>
         <CustomLink
-          to={ROUTES.ARTICLE}
+          to={`article/${item._id}`}
           onClick={callbacks.getArticleById}
           className={cn('link')}
         >
