@@ -6,7 +6,7 @@ import { numberFormat } from '../../utils';
 import i18Obj from '../../i18Obj';
 import './style.css';
 
-function Item({ item, language, onAdd, getArticleById }) {
+function Item({ item, language, onAdd, getArticleById, to=`article/${item._id}` }) {
   const cn = bem('Item');
 
   const callbacks = {
@@ -18,7 +18,7 @@ function Item({ item, language, onAdd, getArticleById }) {
     <div className={cn()}>
       <div className={cn('title')}>
         <Link
-          to={`article/${item._id}`}
+          to={to}
           onClick={callbacks.getArticleById}
           className={cn('link')}
         >
@@ -44,11 +44,12 @@ Item.propTypes = {
   onAdd: PropTypes.func,
   getArticleById: PropTypes.func,
   language: PropTypes.string,
+  to: PropTypes.string,
 };
 
 Item.defaultProps = {
   onAdd: () => {},
-  getArticleById: () => {},
+  getArticleById: () => { },
 };
 
 export default memo(Item);

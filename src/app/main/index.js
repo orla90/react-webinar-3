@@ -15,12 +15,9 @@ function Main() {
   const store = useStore();
 
   const select = useSelector((state) => ({
-    list: state.catalog.list,
+    catalog: state.catalog,
     amount: state.basket.amount,
     sum: state.basket.sum,
-    currentPage: state.catalog.currentPage,
-    perPage: state.catalog.perPage,
-    totalPagesCount: state.catalog.totalPagesCount,
     language: state.language.language,
   }));
 
@@ -31,7 +28,7 @@ function Main() {
 
   useEffect(() => {
     store.actions.catalog.setListForCurrentPage();
-  }, [select.currentPage, select.perPage]);
+  }, [select.catalog.currentPage, select.catalog.perPage]);
 
   const callbacks = {
     // Добавление в корзину
@@ -89,7 +86,9 @@ function Main() {
         <MainMenu
           menu={[
             {
-              to: select.currentPage ? `/${select.currentPage}` : `/`,
+              to: select.catalog.currentPage
+                ? `/${select.catalog.currentPage}`
+                : `/`,
               content: `${i18Obj[select.language].home}`,
             },
           ]}
@@ -101,12 +100,16 @@ function Main() {
           language={select.language}
         />
       </FlexContainer>
-      <List list={select.list} renderItem={renders.item} />
-      <Pagination
-        onSetCurrentPage={callbacks.setCurrentPage}
-        currentPage={select.currentPage}
-        totalPagesCount={select.totalPagesCount}
-      />
+      {!select.catalog.isLoading && (
+        <>
+          <List list={select.catalog.list} renderItem={renders.item} />
+          <Pagination
+            onSetCurrentPage={callbacks.setCurrentPage}
+            currentPage={select.catalog.currentPage}
+            totalPagesCount={select.catalog.totalPagesCount}
+          />
+        </>
+      )}
     </PageLayout>
   );
 }

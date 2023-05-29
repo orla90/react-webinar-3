@@ -7,13 +7,13 @@ import { cn as bem } from '@bem-react/classname';
 import PropTypes from 'prop-types';
 import './style.css';
 
-function ItemBasket(props) {
+function ItemBasket({item, language, onRemove, onClose, getArticleById, to=`article/${item._id}`}) {
   const cn = bem('ItemBasket');
 
   const callbacks = {
-    onRemove: (e) => props.onRemove(props.item._id),
-    onCloseModal: () => props.onClose(),
-    getArticleById: () => props.getArticleById(props.item._id),
+    onRemove: (e) => onRemove(item._id),
+    onCloseModal: () => onClose(),
+    getArticleById: () => getArticleById(item._id),
   };
 
   const onLinkClick = () => {
@@ -24,20 +24,20 @@ function ItemBasket(props) {
   return (
     <div className={cn()}>
       <Link
-        to={`article/${props.item._id}`}
+        to={to}
         className={cn('title')}
         onClick={onLinkClick}
       >
-        {props.item.title}
+        {item.title}
       </Link>
       <div className={cn('right')}>
-        <div className={cn('cell')}>{numberFormat(props.item.price)} ₽</div>
+        <div className={cn('cell')}>{numberFormat(item.price)} ₽</div>
         <div className={cn('cell')}>
-          {numberFormat(props.item.amount || 0)} {i18Obj[props.language].pcs}
+          {numberFormat(item.amount || 0)} {i18Obj[language].pcs}
         </div>
         <div className={cn('cell')}>
           <button onClick={callbacks.onRemove}>
-            {i18Obj[props.language].remove}
+            {i18Obj[language].remove}
           </button>
         </div>
       </div>
@@ -56,12 +56,13 @@ ItemBasket.propTypes = {
   closeModal: propTypes.func,
   getArticleById: propTypes.func,
   language: PropTypes.string,
+  to: PropTypes.string,
 };
 
 ItemBasket.defaultProps = {
   onRemove: () => {},
   closeModal: () => {},
-  getArticleById: () => {},
+  getArticleById: () => { },
 };
 
 export default memo(ItemBasket);

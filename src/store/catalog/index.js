@@ -13,6 +13,7 @@ class Catalog extends StoreModule {
       currentPage: 1,
       perPage: 10,
       totalPagesCount: 0,
+      isLoading: true,
     };
   }
 
@@ -53,6 +54,10 @@ class Catalog extends StoreModule {
   }
   
   async setListForCurrentPage() {
+    this.setState({
+      ...this.getState(),
+      isLoading: true,
+    });
     const skip = this.getState().perPage * (this.getState().currentPage - 1);
     const response = await fetch(
       `/api/v1/articles?limit=${this.getState().perPage}&skip=${skip}`
@@ -61,6 +66,7 @@ class Catalog extends StoreModule {
     this.setState({
       ...this.getState(),
       list: json.result.items,
+      isLoading: false,
     });
   }
 }

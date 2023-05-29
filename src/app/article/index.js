@@ -4,6 +4,7 @@ import Head from '../../components/head';
 import MainMenu from '../../components/main-menu';
 import BasketTool from '../../components/basket-tool';
 import ArticleMain from '../../components/article-main';
+import Spinner from '../../components/spinner';
 import useStore from '../../store/use-store';
 import useSelector from '../../store/use-selector';
 import { useParams } from 'react-router-dom';
@@ -73,12 +74,14 @@ function Article() {
           language={select.language}
         />
       </FlexContainer>
-      {!select.isLoading && (
+      {!select.isLoading ? (
         <ArticleMain
           article={select.article}
           onAdd={callbacks.addToBasket}
           language={select.language}
         />
+      ) : (
+        <Spinner />
       )}
     </PageLayout>
   );

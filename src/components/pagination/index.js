@@ -1,4 +1,4 @@
-import { memo, useEffect, useState } from 'react';
+import { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
@@ -19,31 +19,28 @@ function Pagination(props) {
   const handleOnClick = (e) => {
     if (e.target.innerText !== '...') {
       props.onSetCurrentPage(+e.target.innerText);
-    }
+    } 
   };
 
   return (
     <nav className={cn()}>
       <ul className={cn('list')}>
         {pages.map((page, index) => (
-          <Link
-            to={`${page}`}
-            onClick={handleOnClick}
-            className={cn('link')}
+          <li
             key={index}
+            onClick={handleOnClick} 
+            className={
+              page === '...'
+                ? cn('item', { disabled: true })
+                : props.currentPage === page
+                ? cn('item', { active: true })
+                : cn('item', { default: true })
+            }
           >
-            <li
-              className={
-                page === '...'
-                  ? cn('item', { disabled: true })
-                  : props.currentPage === page
-                  ? cn('item', { active: true })
-                  : cn('item', { default: true })
-              }
-            >
+            <Link to={`${page}`} className={cn('link')}>
               {page}
-            </li>
-          </Link>
+            </Link>
+          </li>
         ))}
       </ul>
     </nav>
