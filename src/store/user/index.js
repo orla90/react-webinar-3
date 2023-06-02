@@ -47,6 +47,36 @@ class UserState extends StoreModule {
     }
   }
 
+  async logoutUser() {
+    this.setState({ ...this.getState(), waiting: true });
+    try {
+      const response = await fetch(`/api/v1/users/sign`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Token': window.localStorage.getItem('token'),
+        },
+      });
+      await response.json();
+      this.setState({
+        ...this.getState(),
+        waiting: false,
+        isAuth: false,
+        errorMessage: '',
+        userProfile: {},
+      });
+    } catch (error) {
+      this.setState({
+        ...this.getState(),
+        waiting: false,
+        isAuth: false,
+        errorMessage: error.message,
+      });
+    } finally {
+      window.localStorage.removeItem('token');
+    }
+  }
+
   async checkIsAuth() {
     const token = window.localStorage.getItem('token');
     if (token) {
@@ -84,15 +114,6 @@ class UserState extends StoreModule {
         });
       }
     }
-  }
-
-  setIsAuth(isAuth) {
-    if (!isAuth) window.localStorage.removeItem('token');
-    this.setState({
-      ...this.getState(),
-      isAuth: isAuth,
-      errorMessage: '',
-    });
   }
 }
 

@@ -14,7 +14,8 @@ function Form({ children, onSubmit }) {
 }
 
 Form.propTypes = {
-  children: PropTypes.node,
+  children: PropTypes.node.isRequired,
+  onSubmit: PropTypes.func.isRequired,
 };
 
 Form.defaultProps = {

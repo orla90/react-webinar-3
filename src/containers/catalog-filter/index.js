@@ -5,7 +5,7 @@ import useSelector from '../../hooks/use-selector';
 import Select from '../../components/select';
 import Input from '../../components/input';
 import SideLayout from '../../components/side-layout';
-import { buildTree } from '../../utils';
+import { buildTree, unpackTree } from '../../utils';
 
 function CatalogFilter() {
   const store = useStore();
@@ -14,6 +14,7 @@ function CatalogFilter() {
     sort: state.catalog.params.sort,
     query: state.catalog.params.query,
     categories: state.catalog.categories,
+    category: state.catalog.params.category,
   }));
 
   const callbacks = {
@@ -47,11 +48,11 @@ function CatalogFilter() {
       []
     ),
     categories: useMemo(() => {
-      const allCategories = [{ value: '', title: 'Все', prefix: '' }].concat(
-        buildTree(select.categories)
+      const allCategories = [{ title: 'Все', value: '', prefix: '' }].concat(
+        unpackTree(buildTree(select.categories))
       );
       return allCategories.map((c) => ({
-        value: c._id,
+        value: c._id || c.value,
         title: c.prefix + c.title,
       }));
     }, [select.categories]),

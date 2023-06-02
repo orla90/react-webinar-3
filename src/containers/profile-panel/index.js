@@ -21,18 +21,11 @@ function ProfilePanel() {
 
   const callbacks = {
     checkIsAuth: useCallback(() => store.actions.user.checkIsAuth(), [store]),
-    setIsAuth: useCallback(
-      (bool) => store.actions.user.setIsAuth(bool),
-      [store]
-    ),
+    logoutUser: useCallback(() => store.actions.user.logoutUser(), [store]),
   };
 
   const onLogin = () => {
     navigate('/login');
-  };
-
-  const onLogout = () => {
-    callbacks.setIsAuth(false);
   };
 
   const { t } = useTranslate();
@@ -46,7 +39,7 @@ function ProfilePanel() {
           <Link to={`/profile/:${select.userProfile.id}`}>
             {select.userProfile.name}
           </Link>
-          <button onClick={onLogout} style={{ marginLeft: 20 }}>
+          <button onClick={callbacks.logoutUser} style={{ marginLeft: 20 }}>
             {t('profile.out')}
           </button>
         </>

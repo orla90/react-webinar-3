@@ -106,7 +106,6 @@ class CatalogState extends StoreModule {
       ...this.getState(),
       waiting: true
     });
-    // const response = await fetch(`/api/v1/categories?fields=_id,title,parent(_id)&limit=*`);
     const response = await fetch(`/api/v1/categories`);
     const json = await response.json();
     this.setState({

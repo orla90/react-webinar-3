@@ -36,15 +36,13 @@ export function numberFormat(value, locale = 'ru-RU', options = {}) {
 
 /**
  * Построение дерева с дочерними узлами и префиксами
- * @param nodes {Array}
+ * @param list {Array}
  * @returns {Array}
  */
-
 export function buildTree(list) {
   var map = {},
     node,
     roots = [],
-    newList = [],
     i;
 
   for (i = 0; i < list.length; i++) {
@@ -61,7 +59,22 @@ export function buildTree(list) {
     } else {
       roots.push(node);
     }
-    newList.push(node);
   }
-  return newList;
+  return roots;
+}
+
+/**
+ * Преобразует дерево в массив в корректной последовательности
+ * @param tree {Array}
+ * @param unpackedTree {Array}
+ * @returns {Array}
+ */
+export function unpackTree(tree, unpackedTree = []) {
+  tree.forEach(node => {
+    unpackedTree.push(node);
+    if (node.children.length > 0) {
+      unpackTree(node.children, unpackedTree)
+    }
+  });
+  return unpackedTree;
 }
