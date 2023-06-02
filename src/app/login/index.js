@@ -1,27 +1,29 @@
-import { memo } from 'react';
+import { memo, useEffect, useCallback } from 'react';
 import useStore from '../../hooks/use-store';
 import useTranslate from '../../hooks/use-translate';
-import useInit from '../../hooks/use-init';
 import Navigation from '../../containers/navigation';
 import PageLayout from '../../components/page-layout';
 import Head from '../../components/head';
-import CatalogFilter from '../../containers/catalog-filter';
-import CatalogList from '../../containers/catalog-list';
+import useSelector from '../../hooks/use-selector';
 import LocaleSelect from '../../containers/locale-select';
 import ProfilePanel from '../../containers/profile-panel';
+import LoginForm from '../../containers/login-form';
+import Spinner from '../../components/spinner';
 
-function Main() {
+function Login() {
   const store = useStore();
 
-  useInit(
-    () => {
-      store.actions.catalog.getCategories();
-      store.actions.catalog.initParams();
-      store.actions.user.checkIsAuth();
-    },
-    [],
-    true
-  );
+  const select = useSelector((state) => ({
+    waiting: state.user.waiting,
+  }));
+
+  const callbacks = {
+    checkIsAuth: useCallback(() => store.actions.user.checkIsAuth(), [store]),
+  };
+
+  useEffect(() => {
+    callbacks.checkIsAuth();
+  }, []);
 
   const { t } = useTranslate();
 
@@ -32,10 +34,11 @@ function Main() {
         <LocaleSelect />
       </Head>
       <Navigation />
-      <CatalogFilter />
-      <CatalogList />
+      <Spinner active={select.waiting}>
+        <LoginForm />
+      </Spinner>
     </PageLayout>
   );
 }
 
-export default memo(Main);
+export default memo(Login);

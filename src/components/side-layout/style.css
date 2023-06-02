@@ -20,11 +20,19 @@
   justify-content: space-between;
 }
 
-.SideLayout_padding_small{
+.SideLayout_padding_small {
   padding: 10px;
 }
 
-.SideLayout_padding_medium{
+.SideLayout_padding_mixed-small {
+  padding: 10px 20px;
+}
+
+.SideLayout_padding_form {
+  padding: 42px 20px 20px;
+}
+
+.SideLayout_padding_medium {
   padding: 20px;
 }
 

@@ -1,0 +1,9 @@
+.Error {
+  font-family: 'Arial';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 18px;
+  color: #ff0000;
+  margin: 0;
+}

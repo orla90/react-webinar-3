@@ -33,3 +33,35 @@ export function codeGenerator(start = 0) {
 export function numberFormat(value, locale = 'ru-RU', options = {}) {
   return new Intl.NumberFormat(locale, options).format(value);
 }
+
+/**
+ * Построение дерева с дочерними узлами и префиксами
+ * @param nodes {Array}
+ * @returns {Array}
+ */
+
+export function buildTree(list) {
+  var map = {},
+    node,
+    roots = [],
+    newList = [],
+    i;
+
+  for (i = 0; i < list.length; i++) {
+    map[list[i]._id] = i;
+    list[i].children = [];
+    list[i].prefix = '';
+  }
+
+  for (i = 0; i < list.length; i += 1) {
+    node = list[i];
+    if (node.parent) {
+      node.prefix += list[map[node.parent._id]].prefix + '-';
+      list[map[node.parent._id]].children.push(node);
+    } else {
+      roots.push(node);
+    }
+    newList.push(node);
+  }
+  return newList;
+}
