@@ -40,18 +40,17 @@ export function numberFormat(value, locale = 'ru-RU', options = {}) {
  * @returns {Array}
  */
 export function buildTree(list) {
-  var map = {},
+  let map = {},
     node,
-    roots = [],
-    i;
+    roots = [];
 
-  for (i = 0; i < list.length; i++) {
+  for (let i = 0; i < list.length; i++) {
     map[list[i]._id] = i;
     list[i].children = [];
     list[i].prefix = '';
   }
 
-  for (i = 0; i < list.length; i += 1) {
+  for (let i = 0; i < list.length; i++) {
     node = list[i];
     if (node.parent) {
       node.prefix += list[map[node.parent._id]].prefix + '- ';
@@ -70,10 +69,10 @@ export function buildTree(list) {
  * @returns {Array}
  */
 export function unpackTree(tree, unpackedTree = []) {
-  tree.forEach(node => {
+  tree.forEach((node) => {
     unpackedTree.push(node);
     if (node.children.length > 0) {
-      unpackTree(node.children, unpackedTree)
+      unpackTree(node.children, unpackedTree);
     }
   });
   return unpackedTree;
