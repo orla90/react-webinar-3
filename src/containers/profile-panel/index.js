@@ -5,22 +5,26 @@ import useSelector from '../../hooks/use-selector';
 import useTranslate from '../../hooks/use-translate';
 import { Link } from 'react-router-dom';
 import SideLayout from '../../components/side-layout';
+import BottomBordered from '../../components/bottom-bordered';
 
 function ProfilePanel() {
   const navigate = useNavigate();
   const store = useStore();
 
   useEffect(() => {
-    callbacks.getProfileData();
+    callbacks.checkIsAuth();
   }, []);
 
   const select = useSelector((state) => ({
     isAuth: state.user.isAuth,
-    userProfile: state.profile.userProfile,
+    user: state.user.user,
   }));
 
   const callbacks = {
-    getProfileData: useCallback(() => store.actions.profile.getProfileData(), [store]),
+    checkIsAuth: useCallback(
+      () => store.actions.user.checkIsAuth(),
+      [store]
+    ),
     logoutUser: useCallback(() => store.actions.user.logoutUser(), [store]),
   };
 
@@ -31,20 +35,20 @@ function ProfilePanel() {
   const { t } = useTranslate();
 
   return (
-    <SideLayout padding='mixed-small' side='end' bottom='grey'>
-      {!select.isAuth ? (
-        <button onClick={onLogin}>{t('profile.in')}</button>
-      ) : (
-        <>
-          <Link to={`/profile`}>
-            {select.userProfile.name}
-          </Link>
-          <button onClick={callbacks.logoutUser} style={{ marginLeft: 20 }}>
-            {t('profile.out')}
-          </button>
-        </>
-      )}
-    </SideLayout>
+    <BottomBordered bottom={'grey'}>
+      <SideLayout padding='mixed-small' side='end'>
+        {!select.isAuth ? (
+          <button onClick={onLogin}>{t('profile.in')}</button>
+        ) : (
+          <>
+            <Link to={`/profile`}>{select.user.name}</Link>
+            <button onClick={callbacks.logoutUser} style={{ marginLeft: 20 }}>
+              {t('profile.out')}
+            </button>
+          </>
+        )}
+      </SideLayout>
+    </BottomBordered>
   );
 }
 

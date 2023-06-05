@@ -18,7 +18,6 @@ function App() {
 
   useInit(
     () => {
-      store.actions.profile.getProfileData();
       store.actions.user.checkIsAuth();
     },
     [],

@@ -9,6 +9,7 @@ class UserState extends StoreModule {
       errorMessage: '',
       isAuth: false,
       waiting: false,
+      user: {},
     };
   }
 
@@ -29,6 +30,10 @@ class UserState extends StoreModule {
           waiting: false,
           isAuth: true,
           errorMessage: '',
+          user: {
+            id: json.result.user._id,
+            name: json.result.user.profile.name,
+          },
         });
         window.localStorage.setItem('token', json.result.token);
       } else if (json.error) {
@@ -69,17 +74,43 @@ class UserState extends StoreModule {
         waiting: false,
         isAuth: false,
         errorMessage: '',
+        user: {},
       });
     }
   }
 
-  checkIsAuth() {
+  async checkIsAuth() {
     const token = window.localStorage.getItem('token');
     if (token) {
       this.setState({
         ...this.getState(),
-        isAuth: true,
+        waiting: true,
       });
+      try {
+        const response = await fetch(`/api/v1/users/self`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Token': token,
+          },
+        });
+        const json = await response.json();
+        this.setState({
+          ...this.getState(),
+          waiting: false,
+          isAuth: true,
+          user: {
+            id: json.result._id,
+            name: json.result.profile.name,
+          },
+        });
+      } catch (e) {
+        console.log(e);
+        this.setState({
+          ...this.getState(),
+          waiting: false,
+        });
+      }
     }
   }
 
