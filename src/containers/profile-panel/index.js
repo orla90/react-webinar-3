@@ -11,16 +11,16 @@ function ProfilePanel() {
   const store = useStore();
 
   useEffect(() => {
-    callbacks.checkIsAuth();
+    callbacks.getProfileData();
   }, []);
 
   const select = useSelector((state) => ({
     isAuth: state.user.isAuth,
-    userProfile: state.user.userProfile,
+    userProfile: state.profile.userProfile,
   }));
 
   const callbacks = {
-    checkIsAuth: useCallback(() => store.actions.user.checkIsAuth(), [store]),
+    getProfileData: useCallback(() => store.actions.profile.getProfileData(), [store]),
     logoutUser: useCallback(() => store.actions.user.logoutUser(), [store]),
   };
 
@@ -31,12 +31,12 @@ function ProfilePanel() {
   const { t } = useTranslate();
 
   return (
-    <SideLayout padding='mixed-small' side='end'>
+    <SideLayout padding='mixed-small' side='end' bottom='grey'>
       {!select.isAuth ? (
         <button onClick={onLogin}>{t('profile.in')}</button>
       ) : (
         <>
-          <Link to={`/profile/:${select.userProfile.id}`}>
+          <Link to={`/profile`}>
             {select.userProfile.name}
           </Link>
           <button onClick={callbacks.logoutUser} style={{ marginLeft: 20 }}>

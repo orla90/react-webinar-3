@@ -6,7 +6,6 @@ import StoreModule from '../module';
 class UserState extends StoreModule {
   initState() {
     return {
-      userProfile: {},
       errorMessage: '',
       isAuth: false,
       waiting: false,
@@ -14,7 +13,7 @@ class UserState extends StoreModule {
   }
 
   async loginUser(userParams) {
-    this.setState({ ...this.getState(), waiting: true });
+    this.setState({ ...this.getState(), errorMessage: '', waiting: true });
     try {
       const response = await fetch(`/api/v1/users/sign`, {
         method: 'POST',
@@ -24,19 +23,22 @@ class UserState extends StoreModule {
         body: JSON.stringify({ ...userParams, remember: true }),
       });
       const json = await response.json();
-      this.setState({
-        ...this.getState(),
-        waiting: false,
-        isAuth: true,
-        errorMessage: '',
-        userProfile: {
-          id: json.result.user._id,
-          name: json.result.user.profile.name,
-          phone: json.result.user.profile.phone,
-          email: json.result.user.email,
-        },
-      });
-      window.localStorage.setItem('token', json.result.token);
+      if (json.result) {
+        this.setState({
+          ...this.getState(),
+          waiting: false,
+          isAuth: true,
+          errorMessage: '',
+        });
+        window.localStorage.setItem('token', json.result.token);
+      } else if (json.error) {
+        this.setState({
+          ...this.getState(),
+          waiting: false,
+          isAuth: false,
+          errorMessage: json.error.data.issues[0].message || json.error.message,
+        });
+      }
     } catch (error) {
       this.setState({
         ...this.getState(),
@@ -58,62 +60,34 @@ class UserState extends StoreModule {
         },
       });
       await response.json();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      window.localStorage.removeItem('token');
       this.setState({
         ...this.getState(),
         waiting: false,
         isAuth: false,
         errorMessage: '',
-        userProfile: {},
       });
-    } catch (error) {
-      this.setState({
-        ...this.getState(),
-        waiting: false,
-        isAuth: false,
-        errorMessage: error.message,
-      });
-    } finally {
-      window.localStorage.removeItem('token');
     }
   }
 
-  async checkIsAuth() {
+  checkIsAuth() {
     const token = window.localStorage.getItem('token');
     if (token) {
       this.setState({
         ...this.getState(),
-        waiting: true,
+        isAuth: true,
       });
-      try {
-        const response = await fetch(`/api/v1/users/self`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-Token': token,
-          },
-        });
-        const json = await response.json();
-        this.setState({
-          ...this.getState(),
-          waiting: false,
-          isAuth: true,
-          errorMessage: '',
-          userProfile: {
-            id: json.result._id,
-            name: json.result.profile.name,
-            phone: json.result.profile.phone,
-            email: json.result.email,
-          },
-        });
-      } catch (error) {
-        this.setState({
-          ...this.getState(),
-          waiting: false,
-          isAuth: false,
-          errorMessage: error.message,
-        });
-      }
     }
+  }
+
+  resetErrorMessage() {
+    this.setState({
+      ...this.getState(),
+      errorMessage: '',
+    });
   }
 }
 

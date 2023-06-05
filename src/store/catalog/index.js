@@ -19,7 +19,6 @@ class CatalogState extends StoreModule {
         query: '',
         category: '',
       },
-      categories: [],
       count: 0,
       waiting: false
     }
@@ -99,20 +98,6 @@ class CatalogState extends StoreModule {
       count: json.result.count,
       waiting: false
     }, 'Загружен список товаров из АПИ');
-  }
-  
-  async getCategories() {
-    this.setState({
-      ...this.getState(),
-      waiting: true
-    });
-    const response = await fetch(`/api/v1/categories`);
-    const json = await response.json();
-    this.setState({
-      ...this.getState(),
-      waiting: false,
-      categories: json.result.items
-    }, 'Получены категории');
   }
 }
 
