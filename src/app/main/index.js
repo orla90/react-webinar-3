@@ -15,9 +15,8 @@ function Main() {
 
   useInit(
     () => {
-      store.actions.catalog.getCategories();
+      store.actions.categories.getCategories();
       store.actions.catalog.initParams();
-      store.actions.user.checkIsAuth();
     },
     [],
     true

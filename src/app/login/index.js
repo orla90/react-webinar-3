@@ -9,21 +9,28 @@ import LocaleSelect from '../../containers/locale-select';
 import ProfilePanel from '../../containers/profile-panel';
 import LoginForm from '../../containers/login-form';
 import Spinner from '../../components/spinner';
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
   const store = useStore();
+  const navigate = useNavigate();
 
   const select = useSelector((state) => ({
     waiting: state.user.waiting,
   }));
 
   const callbacks = {
-    checkIsAuth: useCallback(() => store.actions.user.checkIsAuth(), [store]),
+    getProfileData: useCallback(() => store.actions.profile.getProfileData(), [store]),
+    resetErrorMessage: useCallback(() => store.actions.user.resetErrorMessage(), [store]),
   };
 
   useEffect(() => {
-    callbacks.checkIsAuth();
+    callbacks.getProfileData();
   }, []);
+  
+  useEffect(() => {
+    callbacks.resetErrorMessage();
+  }, [navigate]);
 
   const { t } = useTranslate();
 

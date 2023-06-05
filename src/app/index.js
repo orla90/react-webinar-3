@@ -1,21 +1,32 @@
 import { Routes, Route } from 'react-router-dom';
 import useSelector from '../hooks/use-selector';
+import useStore from '../hooks/use-store';
+import useInit from '../hooks/use-init';
 import Main from './main';
 import Basket from './basket';
 import Article from './article';
 import Login from './login';
 import Profile from './profile';
-import Protected from '../components/protected';
+import Protected from '../containers/protected';
 
 /**
  * Приложение
  * @returns {React.ReactElement}
  */
 function App() {
+  const store = useStore();
+
+  useInit(
+    () => {
+      store.actions.profile.getProfileData();
+      store.actions.user.checkIsAuth();
+    },
+    [],
+    true
+  );
+
   const select = useSelector((state) => ({
     activeModal: state.modals.name,
-    isAuth: state.user.isAuth,
-    userId: state.user.userProfile.id,
   }));
 
   return (
@@ -26,18 +37,15 @@ function App() {
         <Route
           path={'/login'}
           element={
-            <Protected
-              isAuth={!select.isAuth}
-              to={`/profile/:${select.userId}`}
-            >
+            <Protected to={`/profile`} isAuth={true}>
               <Login />
             </Protected>
           }
         />
         <Route
-          path={'/profile/:id'}
+          path={'/profile'}
           element={
-            <Protected isAuth={select.isAuth} to={'/login'}>
+            <Protected to={'/login'} isAuth={false}>
               <Profile />
             </Protected>
           }

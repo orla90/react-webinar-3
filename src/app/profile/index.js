@@ -11,7 +11,7 @@ import ProfileCard from '../../components/profile-card';
 function Profile() {
   const select = useSelector((state) => ({
     isAuth: state.article.data,
-    userProfile: state.user.userProfile,
+    userProfile: state.profile.userProfile,
   }));
 
   const { t } = useTranslate();
